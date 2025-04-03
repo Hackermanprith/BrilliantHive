@@ -39,10 +39,9 @@ const Navbar = async () => {
           </LogoutLink>
         ) : (
           <div className="flex gap-2">
-            <LoginLink className="text-white hover:text-gray-300 transition-colors">Sign In</LoginLink>
-            <RegisterLink className="bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200 transition-colors">
+            <LoginLink className="bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200 transition-colors">
               Sign Up
-            </RegisterLink>
+            </LoginLink>
           </div>
         )}
         <MenuIcon className="md:hidden text-white" />
