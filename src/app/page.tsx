@@ -65,16 +65,9 @@ export default function Home() {
               up {"you'll"} never leave us after this!
               <ul className="my-4 flex flex-col gap-2">
                 <li className="flex items-center gap-2">
-                  <CheckIcon />3 Free automations
+                  <CheckIcon />Best Management
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckIcon />
-                  Unlimited tasks per month
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckIcon />
-                  Two-step Actions
-                </li>
+          
               </ul>
             </CardItem>
             <div className="flex justify-between items-center mt-8">
@@ -112,16 +105,9 @@ export default function Home() {
               up {"you'll"} never leave us after this!
               <ul className="my-4 flex flex-col gap-2">
                 <li className="flex items-center gap-2">
-                  <CheckIcon />Free automations
+                  <CheckIcon />Best Management
                 </li>
-                <li className="flex items-center gap-2">
-                  <CheckIcon />
-                  Unlimited tasks per month
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckIcon />
-                  Two-step Actions
-                </li>
+        
                 <li className="flex items-center gap-2">
                   <CheckIcon />
                   Support the developer
