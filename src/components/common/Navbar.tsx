@@ -40,7 +40,7 @@ const Navbar = async () => {
         ) : (
           <div className="flex gap-2">
             <LoginLink className="bg-white text-black px-3 py-1 rounded-full hover:bg-gray-200 transition-colors">
-              Sign Up
+              Sign In
             </LoginLink>
           </div>
         )}
