@@ -1,0 +1,157 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String  @id @default(cuid())
+  email      String  @unique
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  subjects   SubjectProgress[]
+  topics     TopicProgress[]
+  sessions   StudySession[]
+  goals      Goal[]
+  
+  @@map("users")
+}
+
+model Subject {
+  id         String  @id @default(cuid())
+  name       String  @unique
+  code       String  @unique
+  topics     Topic[]
+  learners   SubjectProgress[]
+  sessions   StudySession[]
+  goals      Goal[]
+  
+  @@map("subjects")
+}
+
+model Topic {
+  id         String  @id @default(cuid())
+  name       String
+  subjectId  String
+  
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  learners  TopicProgress[]
+  sessions  StudySession[]
+  goals     Goal[]
+  
+  @@unique([name, subjectId])
+  @@map("topics")
+}
+
+model SubjectProgress {
+  id           String  @id @default(cuid())
+  userId       String
+  subjectId    String
+  topic        String //Currently not implemented
+  level        Level @default(BEGINNER)
+  targetLevel  Level
+  startedAt    DateTime @default(now())
+  totalMinutes Int @default(0)
+  
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, subjectId])
+  @@map("subjects_progress")
+}
+
+model TopicProgress {
+  id           String  @id @default(cuid())
+  userId       String
+  topicId      String
+  progress     Int @default(0)
+  startedAt    DateTime @default(now())
+  
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic  Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, topicId])
+  @@map("topics_progress")
+}
+
+model StudySession {
+  id         String  @id @default(cuid())
+  userId     String
+  subjectId  String?
+  topicId    String?
+  date       DateTime @default(now())
+  duration   Int
+  type       ActivityType
+  description String?
+  difficulty Difficulty?
+  archived   Boolean @default(false)
+  createdAt  DateTime @default(now())
+
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic   Topic? @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, subjectId])
+  @@index([userId, topicId])
+  @@map("study_sessions")
+}
+
+model Goal {
+  id           String  @id @default(cuid())
+  userId       String
+  subjectId    String?
+  topicId      String?
+  target       Int
+  deadline     DateTime
+  activityType ActivityType
+  status       GoalStatus @default(NOT_STARTED)
+  archived     Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic   Topic? @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, subjectId])
+  @@index([userId, topicId])
+  @@map("goals")
+}
+
+enum Level {
+  BEGINNER
+  ELEMENTARY
+  INTERMEDIATE
+  UPPER_INTERMEDIATE
+  ADVANCED
+  MASTERY
+}
+
+enum ActivityType {
+  READING
+  WATCHING
+  PYQ
+  DPP
+  REVISION
+  IMMERSION
+  TESTPREP
+  OTHER
+}
+
+enum Difficulty {
+  EASY
+  JUST_RIGHT
+  CHALLENGING
+  VERY_HARD
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
